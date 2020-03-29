@@ -6,13 +6,10 @@
 //  Copyright © 2020 saori. All rights reserved.
 //
 
-import SwiftUI
-
 import UIKit
 import SwiftUI
 
 let data: [TaskModel] = load("TaskListData.json")
-let taskModelData: [TaskModel] = sortbyDate(data)
 
 func load<T: Decodable>(_ filename: String) -> T {
     let data: Data
@@ -30,18 +27,11 @@ func load<T: Decodable>(_ filename: String) -> T {
 
     do {
         let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
         return try decoder.decode(T.self, from: data)
     } catch {
         fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
     }
-}
-
-func sortbyDate<T: Decodable>(_ data: T) -> [TaskModel] {
-    guard let data = data as? [TaskModel] else {
-        fatalError("Couldn't load")
-    }
-    let task = data.sorted { $0.id < $1.id }
-    return task
 }
 
 final class ImageStore {

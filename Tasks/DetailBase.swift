@@ -17,6 +17,6 @@ struct DetailBase: View {
 
 struct DetailBase_Previews: PreviewProvider {
     static var previews: some View {
-        DetailBase(taskModel: taskModelData[0])
+        DetailBase(taskModel: Service().taskData[0])
     }
 }
