@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct DetailBase: View {
+    @ObservedObject var service = Service()
     var taskModel: TaskModel
     var body: some View {
         Text(taskModel.name)
@@ -17,6 +18,6 @@ struct DetailBase: View {
 
 struct DetailBase_Previews: PreviewProvider {
     static var previews: some View {
-        DetailBase(taskModel: Service().taskData[0])
+        DetailBase(taskModel: data[0])
     }
 }

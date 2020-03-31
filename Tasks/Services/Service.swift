@@ -6,12 +6,17 @@
 //  Copyright © 2020 saori. All rights reserved.
 //
 
-import Foundation
+import SwiftUI
+import Combine
 
-class Service {
-    var taskData = data
-    func sortbyDate() -> [TaskModel] {
-        let task = data.sorted { $0.date < $1.date }
-        return task
+func sortbyDate() -> [TaskModel] {
+    let task = data.sorted { $0.date < $1.date }
+    return task
+}
+
+class Service: ObservableObject {
+    @Published var taskData: [TaskModel] = data
+    init() {
+        self.taskData = sortbyDate()
     }
 }

@@ -9,24 +9,92 @@
 import SwiftUI
 
 struct TaskList: View {
-    @State var taskData = Service().sortbyDate()
+    @ObservedObject var service = Service()
+    @State var selectedCard = false
+    @State var viewState = CGSize.zero
+    @State var bottomState = CGSize.zero
+    @State var activeIndex = -1
+    @State var activeView = CGSize.zero
+    @State var showFull = false
 
     var body: some View {
-        NavigationView {
-            List(taskData) { task in
-                NavigationLink(destination: DetailBase(taskModel: task)) {
-                    TaskRow(taskModel: task)
+        ZStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    Button(action: appendCard, label: {Text("+")})
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.trailing, 30)
+                        .padding(.top, 30)
+
+                    ForEach(service.taskData.indices, id: \.self) { index in
+                        TaskRow(taskModel: self.service.taskData[index])
+                            .onTapGesture {
+                                self.selectedCard = true
+                                print("aaaaaaa")
+                        }
+                        .gesture(
+                            DragGesture().onChanged { value in
+                                self.viewState = value.translation
+                                self.selectedCard = true
+                            }
+                            .onEnded { value in
+                                self.viewState = .zero
+                                self.selectedCard = false
+                            }
+                        )
+                    }
                 }
+                .frame(width: UIScreen.main.bounds.width)
             }
-            .navigationBarTitle(Text("TASK LIST"))
-            .navigationBarItems(trailing: Button(action: appendCard, label: {Text("+")}))
+
+            DetailView()
+                .offset(x: 0, y: selectedCard ? 360 : 1000)
+                    .offset(y: bottomState.height)
+                    .blur(radius: selectedCard ? 0 : 0)
+                    .animation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.8))
+                .gesture(
+                    DragGesture().onChanged { value in
+                        self.bottomState = value.translation
+                        if self.showFull {
+                            self.bottomState.height += -300
+                        }
+                        if self.bottomState.height < -300 {
+                            self.bottomState.height = -300
+                        }
+                    }
+                    .onEnded { value in
+                        if self.bottomState.height > 50 {
+                            self.selectedCard = false
+                        }
+                        if (self.bottomState.height < -100 && !self.showFull) || (self.bottomState.height < -250 && self.showFull) {
+                            self.bottomState.height = -300
+                            self.showFull = true
+                        } else {
+                            self.bottomState = .zero
+                            self.showFull = false
+                        }
+                    }
+                )
         }
+
+//        NavigationView {
+//            List(service.taskData) { task in
+//                NavigationLink(destination: DetailBase(taskModel: task)) {
+//                    TaskRow(taskModel: task)
+//                        .frame(height: 400)
+//                        .frame(maxWidth: UIScreen.main.bounds.width - 60)
+//                }
+//            }
+//
+//            .navigationBarTitle(Text("TASK LIST"))
+//            .navigationBarItems(trailing: Button(action: appendCard, label: {Text("+")}))
+//        }
     }
 
     func appendCard() {
-        let maxId = (taskData.map{ $0.id }.max() ?? 0) + 1
+        let maxId = (service.taskData.map{ $0.id }.max() ?? 0) + 1
         let task = TaskModel(id: maxId, name: "new task \(maxId)", date: Date())
-        taskData.append(task)
+        service.taskData.append(task)
     }
 }
 

@@ -23,7 +23,11 @@ struct TaskRow: View {
                 .background(Color(white: 0.9))
                 .cornerRadius(10)
         }
+        .frame(width: UIScreen.main.bounds.width - 60, height: 200)
+        .background(Color.green)
+        .cornerRadius(20)
     }
+    
     func doneCard() {
         taskModel.date = Date()
     }
@@ -32,8 +36,8 @@ struct TaskRow: View {
 struct TaskRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            TaskRow(taskModel: Service().taskData[1])
+            TaskRow(taskModel: data[0])
         }
-        .previewLayout(.fixed(width: 300, height: 170))
+        .previewLayout(.fixed(width: 300, height: 300))
     }
 }
