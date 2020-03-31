@@ -9,13 +9,20 @@
 import SwiftUI
 
 struct TaskList: View {
-    @ObservedObject var service = Service()
     @State var selectedCard = false
     @State var viewState = CGSize.zero
     @State var bottomState = CGSize.zero
     @State var activeIndex = -1
     @State var activeView = CGSize.zero
     @State var showFull = false
+
+    @ObservedObject private var service: Service
+
+    var presenter: TaskListPresenter?
+    init(presenter: TaskListPresenter?, service: Service) {
+        self.service = service
+        self.presenter = presenter
+    }
 
     var body: some View {
         ZStack {
@@ -76,6 +83,7 @@ struct TaskList: View {
                     }
                 )
         }
+        .onAppear(perform: presenter?.fetchTask)
 
 //        NavigationView {
 //            List(service.taskData) { task in
@@ -91,6 +99,7 @@ struct TaskList: View {
 //        }
     }
 
+
     func appendCard() {
         let maxId = (service.taskData.map{ $0.id }.max() ?? 0) + 1
         let task = TaskModel(id: maxId, name: "new task \(maxId)", date: Date())
@@ -100,6 +109,6 @@ struct TaskList: View {
 
 struct TaskList_Previews: PreviewProvider {
     static var previews: some View {
-        TaskList()
+        TaskList(presenter: nil, service: Service())
     }
 }
