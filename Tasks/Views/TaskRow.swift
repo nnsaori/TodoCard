@@ -9,14 +9,16 @@
 import SwiftUI
 
 struct TaskRow: View {
-    @State var taskModel = TaskModel()
+//    @ObservedObject var servide: Service
+    var model: TaskModel
 
     var body: some View {
         HStack {
             VStack {
-                Text(taskModel.name)
-                Text(taskModel.date!.string()).padding(.top, 5)
-                Text(String(taskModel.date!.elapsedDays(date: taskModel.scheduledDate))).padding(.top, 5)
+                Text(model.name)
+                Text(model.date).padding(.top, 5)
+//                Text(String(taskModel.date.elapsedDays(date: taskModel.scheduledDate))).padding(.top, 5)
+//                TextField("aaaaaa", text: $servide.taskData[0].date)
             }
             Spacer()
 
@@ -29,31 +31,26 @@ struct TaskRow: View {
             }
         }
         .frame(width: UIScreen.main.bounds.width - 60, height: 200)
-        .background(self.intToColor(raw: taskModel.color))
+        .background(self.intToColor(raw: model.color ?? 0))
         .cornerRadius(20)
     }
 
     func doneCard() {
-        taskModel.date = Date()
+//        taskModel.date = "Date().string()"
     }
 
-    func intToColor(raw: Int?) -> Color {
-        guard let color = raw else {
-            #warning("TODO: force unwrapping")
-            return TaskColor(rawValue: 1)!.color
-        }
-
+    func intToColor(raw: Int) -> Color {
         #warning("TODO: force unwrapping")
-        return TaskColor(rawValue: color)!.color
+        return TaskColor(rawValue: raw)?.color ?? .white
     }
 
 }
 
-struct TaskRow_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            TaskRow(taskModel: data[0])
-        }
-        .previewLayout(.fixed(width: 300, height: 300))
-    }
-}
+//struct TaskRow_Previews: PreviewProvider {
+//    static var previews: some View {
+//        Group {
+//            TaskRow(taskModel: data[0])
+//        }
+//        .previewLayout(.fixed(width: 300, height: 300))
+//    }
+//}

@@ -10,13 +10,8 @@ import SwiftUI
 
 struct DetailView: View {
 
-    @ObservedObject private var service: Service
-    var presenter: DetailPresenter?
-
-    init(presenter: DetailPresenter?, service: Service) {
-        self.presenter = presenter
-        self.service = service
-    }
+    @Binding var model: TaskModel
+    @ObservedObject var service: Service
 
     var body: some View {
         VStack(spacing: 20) {
@@ -27,24 +22,33 @@ struct DetailView: View {
             VStack {
                 HStack {
                     ForEach(TaskColor.allCases, id: \.self) { color in
-                        Text(color.rawValue == self.service.lastSelectedTask?.color ? "1" : "")
-                            .font(.system(size: 16, weight: .medium))
-                            .frame(width: 36, height: 36)
-                            .background(color.color)
-                            .clipShape(Circle())
-                            .onTapGesture {
-                                self.presenter?.tappedColor(color: TaskColor(rawValue: color.rawValue))
+                        Button(action: {
+                            self.service.taskData[self.service.selectedIndex].color = color.rawValue
+                        }) {
+                            HStack {
+                                Text(color.rawValue == self.model.color ? "●" : "")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .frame(width: 36, height: 36)
+                                    .background(color.color)
+                                    .clipShape(Circle())
+                            }
                         }
+//                        Text(color.rawValue == self.model.color ? "●" : "")
+//                            .font(.system(size: 16, weight: .medium))
+//                            .frame(width: 36, height: 36)
+//                            .background(color.color)
+//                            .clipShape(Circle())
+//                            .onTapGesture {
+//                                self.editDate(type: color)
+//                        }
                     }
                 }
-//                TextField("Date", text: service.lastSelectedTask.name)
-                Text(self.service.lastSelectedTask?.name ?? "")
-                    .fontWeight(.bold)
-                    .padding(.top, 10)
-                Text(self.service.lastSelectedTask?.date?.string() ?? "")
-                    .fontWeight(.bold)
-                    .padding(.top, 10)
-                Text(self.service.lastSelectedTask?.scheduledDate?.string() ?? "")
+
+                TextField("name", text: $model.name).padding(.top, 10)
+//                    .fontWeight(.bold)
+//                    .padding(.top, 10)
+                TextField("date", text: $model.date)
+                Text(model.scheduledDate?.string() ?? "")
                     .fontWeight(.bold)
                     .padding(.top, 10)
             }
@@ -58,10 +62,14 @@ struct DetailView: View {
         .cornerRadius(30)
         .shadow(radius: 20)
     }
-}
 
-struct DetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailView(presenter: nil, service: Service())
+    func editDate(type: TaskColor) {
+//        self._model.color = type.rawValue
     }
 }
+
+//struct DetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailView(presenter: nil, service: Service())
+//    }
+//}

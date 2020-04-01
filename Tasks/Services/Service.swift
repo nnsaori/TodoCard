@@ -11,20 +11,24 @@ import Combine
 
 func sortbyDate() -> [TaskModel] {
     #warning("TODO: force unwrapping")
-    let task = data.sorted { $0.date! < $1.date! }
-    return task
+//    let task = data.sorted { $0.date < $1.date! }
+    return data
 }
 
 func selectedModel() -> [TaskModel] {
     #warning("TODO: force unwrapping")
-    let task = data.sorted { $0.date! < $1.date! }
-    return task
+//    let task = data.sorted { $0.date! < $1.date! }
+    return data
 }
 
 class Service: ObservableObject {
     @Published var taskData: [TaskModel] = sortbyDate()
-    @Published var lastSelectedTask: TaskModel?
+    @Published var selectedIndex = 0
 
     init() {
+    }
+
+    func setTask(_ task: TaskModel) {
+//        selectedTask = task
     }
 }

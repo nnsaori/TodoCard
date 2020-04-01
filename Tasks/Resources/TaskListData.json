@@ -12,6 +12,7 @@
         "id": 1001,
         "date": "2018-08-14T04:04:30+09:00",
         "scheduled_date": "2018-09-14T04:04:30+09:00",
+        "color": 3,
     },
     {
         "name": "1Silver Salmon Creek",

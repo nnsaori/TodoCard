@@ -20,7 +20,6 @@ class DetailPresenter: DetailPresenterProtocol {
     }
 
     func tappedColor(color: TaskColor?) {
-        service.lastSelectedTask?.color = color?.rawValue
+//        service.lastSelectedTask.color = color?.rawValue
     }
 }
-

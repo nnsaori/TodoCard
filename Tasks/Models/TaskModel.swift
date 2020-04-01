@@ -6,7 +6,6 @@
 //  Copyright © 2020 saori. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
 import Combine
 
@@ -30,10 +29,10 @@ enum TaskColor: Int, CaseIterable {
 }
 
 struct TaskModel: Hashable, Codable, Identifiable {
-    var id: Int = -1
+    var id: Int = 0
     var name: String = ""
     var description: String?
-    var date: Date?
+    var date: String = ""
     var scheduledDate: Date?
     var color: Int?
 }
