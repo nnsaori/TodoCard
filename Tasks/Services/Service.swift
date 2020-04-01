@@ -15,8 +15,15 @@ func sortbyDate() -> [TaskModel] {
     return task
 }
 
+func selectedModel() -> [TaskModel] {
+    #warning("TODO: force unwrapping")
+    let task = data.sorted { $0.date! < $1.date! }
+    return task
+}
+
 class Service: ObservableObject {
-    @Published var taskData: [TaskModel] = data
+    @Published var taskData: [TaskModel] = sortbyDate()
+    @Published var lastSelectedTask: TaskModel?
 
     init() {
     }

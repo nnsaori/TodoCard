@@ -2,16 +2,23 @@
     {
         "name": "2風呂掃除",
         "id": 1102,
-        "date":"2018-08-14T04:04:30+09:00",
+        "date": "2018-08-14T04:04:30+09:00",
+        "scheduled_date": "2018-09-14T04:04:30+09:00",
+        "color": 1,
+        "description": "aaaaaaaaaaa",
     },
     {
         "name": "3Salon",
         "id": 1001,
-        "date":"2020-08-14T04:04:30+09:00",
+        "date": "2018-08-14T04:04:30+09:00",
+        "scheduled_date": "2018-09-14T04:04:30+09:00",
     },
     {
         "name": "1Silver Salmon Creek",
         "id": 1002,
-        "date":"2017-08-14T04:04:30+09:00",
+        "date": "2018-08-14T04:04:30+09:00",
+        "scheduled_date": "2018-09-14T04:04:30+09:00",
+        "color": 2,
+        "description": "aaaaaaaaaaa",
     }
 ]

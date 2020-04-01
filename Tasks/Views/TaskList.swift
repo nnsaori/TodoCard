@@ -9,13 +9,14 @@
 import SwiftUI
 
 struct TaskList: View {
-    @State var selectedCard = false
-    @State var viewState = CGSize.zero
-    @State var bottomState = CGSize.zero
-    @State var activeIndex = -1
-    @State var activeView = CGSize.zero
-    @State var showFull = false
+    @State private var selectedCard = false
+    @State private var viewState = CGSize.zero
+    @State private var bottomState = CGSize.zero
+    @State private var activeIndex = -1
+    @State private var activeView = CGSize.zero
+    @State private var showFull = false
 
+    #warning("change to Model")
     @ObservedObject private var service: Service
 
     var presenter: TaskListPresenter?
@@ -37,7 +38,7 @@ struct TaskList: View {
                         TaskRow(taskModel: self.service.taskData[index])
                             .onTapGesture {
                                 self.selectedCard = true
-                                print("aaaaaaa")
+                                self.service.lastSelectedTask = self.service.taskData[index]
                         }
                         .gesture(
                             DragGesture().onChanged { value in
@@ -54,7 +55,7 @@ struct TaskList: View {
                 .frame(width: UIScreen.main.bounds.width)
             }
 
-            DetailView()
+            DetailView(presenter: DetailPresenter(service: self.service), service: self.service)
                 .offset(x: 0, y: selectedCard ? 360 : 1000)
                     .offset(y: bottomState.height)
                     .blur(radius: selectedCard ? 0 : 0)
@@ -98,7 +99,6 @@ struct TaskList: View {
 //            .navigationBarItems(trailing: Button(action: appendCard, label: {Text("+")}))
 //        }
     }
-
 
     func appendCard() {
         let maxId = (service.taskData.map{ $0.id }.max() ?? 0) + 1

@@ -9,28 +9,44 @@
 import SwiftUI
 
 struct TaskRow: View {
-    @State var taskModel: TaskModel
+    @State var taskModel = TaskModel()
 
     var body: some View {
         HStack {
-            Text(taskModel.name)
-            Spacer()
-            Text("One").onTapGesture {
-                self.doneCard()
+            VStack {
+                Text(taskModel.name)
+                Text(taskModel.date!.string()).padding(.top, 5)
+                Text(String(taskModel.date!.elapsedDays(date: taskModel.scheduledDate))).padding(.top, 5)
             }
-                .frame(width: 100)
-                .padding(5)
-                .background(Color(white: 0.9))
+            Spacer()
+
+            Image(systemName: "xmark")
+                .frame(width: 36, height: 36)
+                .background(Color.black)
                 .cornerRadius(10)
+                .onTapGesture {
+                    self.doneCard()
+            }
         }
         .frame(width: UIScreen.main.bounds.width - 60, height: 200)
-        .background(Color.green)
+        .background(self.intToColor(raw: taskModel.color))
         .cornerRadius(20)
     }
-    
+
     func doneCard() {
         taskModel.date = Date()
     }
+
+    func intToColor(raw: Int?) -> Color {
+        guard let color = raw else {
+            #warning("TODO: force unwrapping")
+            return TaskColor(rawValue: 1)!.color
+        }
+
+        #warning("TODO: force unwrapping")
+        return TaskColor(rawValue: color)!.color
+    }
+
 }
 
 struct TaskRow_Previews: PreviewProvider {
