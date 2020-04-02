@@ -33,24 +33,11 @@ struct DetailView: View {
                                     .clipShape(Circle())
                             }
                         }
-//                        Text(color.rawValue == self.model.color ? "●" : "")
-//                            .font(.system(size: 16, weight: .medium))
-//                            .frame(width: 36, height: 36)
-//                            .background(color.color)
-//                            .clipShape(Circle())
-//                            .onTapGesture {
-//                                self.editDate(type: color)
-//                        }
                     }
                 }
 
                 TextField("name", text: $model.name).padding(.top, 10)
-//                    .fontWeight(.bold)
-//                    .padding(.top, 10)
-                TextField("date", text: $model.date)
-                Text(model.scheduledDate?.string() ?? "")
-                    .fontWeight(.bold)
-                    .padding(.top, 10)
+                TextField("description", text: $model.description).padding(.top, 10)
             }
             .padding(.horizontal, 10)
             Spacer()

@@ -13,7 +13,6 @@ struct TaskList: View {
     @State private var viewState = CGSize.zero
     @State private var bottomState = CGSize.zero
     @State private var showFull = false
-
     @State private var activeIndex = 0
 
     #warning("change to Model")
@@ -33,7 +32,7 @@ struct TaskList: View {
                         .padding(.trailing, 30)
                         .padding(.top, 30)
                     ForEach(service.taskData.indices, id: \.self) { index in
-                        TaskRow(model: self.service.taskData[index])
+                        TaskRow(service: self.service, model: self.service.taskData[index], index: index)
                             .onTapGesture {
                                 #warning("selectedIndex消す")
                                 self.service.selectedIndex = index
