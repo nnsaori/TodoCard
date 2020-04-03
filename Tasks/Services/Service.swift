@@ -10,25 +10,18 @@ import SwiftUI
 import Combine
 
 func sortbyDate() -> [TaskModel] {
-    #warning("TODO: force unwrapping")
-//    let task = data.sorted { $0.date < $1.date! }
-    return data
+    let list = data.sorted { $0.date < $1.date }
+    return list
 }
 
 func selectedModel() -> [TaskModel] {
-    #warning("TODO: force unwrapping")
-//    let task = data.sorted { $0.date! < $1.date! }
-    return data
+    let list = data.sorted { $0.date < $1.date }
+    return list
 }
 
 class Service: ObservableObject {
     @Published var taskData: [TaskModel] = sortbyDate()
-    @Published var selectedIndex = 0
 
     init() {
-    }
-
-    func setTask(_ task: TaskModel) {
-//        selectedTask = task
     }
 }

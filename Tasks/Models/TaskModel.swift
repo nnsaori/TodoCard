@@ -34,5 +34,5 @@ struct TaskModel: Hashable, Codable, Identifiable {
     var description = ""
     var date: String = ""
     var scheduledDate: Date?
-    var color: Int?
+    var color: Int = 0
 }

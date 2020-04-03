@@ -14,8 +14,7 @@ struct TaskList: View {
     @State private var bottomState = CGSize.zero
     @State private var showFull = false
     @State private var activeIndex = 0
-
-    #warning("change to Model")
+    @State var card = TaskModel()
     @ObservedObject private var service: Service
 
     var presenter: TaskListPresenter?
@@ -23,6 +22,7 @@ struct TaskList: View {
         self.service = service
         self.presenter = presenter
     }
+
     var body: some View {
         ZStack {
             ScrollView {
@@ -34,16 +34,15 @@ struct TaskList: View {
                             .padding(.top, 30)
                     }
 
-                    ForEach(service.taskData.indices, id: \.self) { index in
+                    ForEach(service.taskData, id: \.self) { model in
                         GeometryReader { geometry in
-                            TaskRow(service: self.service, model: self.$service.taskData[index], index: index, active: (self.service.selectedIndex == index && self.selectedCard))
-                                .offset(y: self.service.selectedIndex == index && self.selectedCard ? -(geometry.frame(in: .global).minY - 150) : 0)
-                                .scaleEffect((self.service.selectedIndex == index && self.selectedCard) ? 1.1 : 1)
-                                .offset(x: self.activeIndex != index && self.selectedCard ? UIScreen.main.bounds.width : 0)
+                            TaskRow(service: self.service, model: model,
+                                    active: (self.activeIndex == self.service.taskData.firstIndex(of: model)  && self.selectedCard))
+                                .offset(y: self.activeIndex == self.service.taskData.firstIndex(of: model) && self.selectedCard ? -(geometry.frame(in: .global).minY - 150) : 0)
+                                .scaleEffect((self.activeIndex == self.service.taskData.firstIndex(of: model) && self.selectedCard) ? 1.1 : 1)
+                                .offset(x: self.activeIndex != self.service.taskData.firstIndex(of: model) && self.selectedCard ? UIScreen.main.bounds.width : 0)
                                 .onTapGesture {
-                                    #warning("selectedIndex消す")
-                                    self.service.selectedIndex = index
-                                    self.activeIndex = index
+                                    self.activeIndex = self.service.taskData.firstIndex(of: model)!
                                     self.selectedCard = true
                             }
                             .frame(maxWidth: .infinity)
@@ -51,6 +50,7 @@ struct TaskList: View {
                                 DragGesture().onChanged { value in
                                     self.viewState = value.translation
                                     self.selectedCard = true
+                                    self.card = model
                                 }
                                 .onEnded { value in
                                     self.viewState = .zero
@@ -65,50 +65,43 @@ struct TaskList: View {
                 .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
             }
 
-                DetailView(model: $service.taskData[activeIndex], service: service)
-                    .offset(x: 0, y: selectedCard ? 300 : 1000)
-                    .offset(y: bottomState.height)
-                    .blur(radius: selectedCard ? 0 : 0)
-                    .animation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.5))
-                    .gesture(
-                        DragGesture().onChanged { value in
-                            self.bottomState = value.translation
-                            if self.showFull {
-                                self.bottomState.height += -280
-                            }
-                            if self.bottomState.height < -280 {
-                                self.bottomState.height = -280
-                            }
+            DetailView(service: service, index: activeIndex)
+                .offset(x: 0, y: selectedCard ? 300 : 1000)
+                .offset(y: bottomState.height)
+                .blur(radius: selectedCard ? 0 : 0)
+                .animation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.5))
+                .gesture(
+                    DragGesture().onChanged { value in
+                        self.bottomState = value.translation
+                        if self.showFull {
+                            self.bottomState.height += -280
                         }
-                        .onEnded { value in
-                            if self.bottomState.height > 50 {
-                                self.selectedCard = false
-                            }
-                            if (self.bottomState.height < -100 && !self.showFull) || (self.bottomState.height < -250 && self.showFull) {
-                                self.bottomState.height = -280
-                                self.showFull = true
-                            } else {
-                                self.bottomState = .zero
-                                self.showFull = false
-                            }
+                        if self.bottomState.height < -280 {
+                            self.bottomState.height = -280
                         }
-                )
-            }
-            .onAppear(perform: presenter?.fetchTask)
+                    }
+                    .onEnded { value in
+                        if self.bottomState.height > 50 {
+                            self.selectedCard = false
+                        }
+                        if (self.bottomState.height < -100 && !self.showFull) || (self.bottomState.height < -250 && self.showFull) {
+                            self.bottomState.height = -280
+                            self.showFull = true
+                        } else {
+                            self.bottomState = .zero
+                            self.showFull = false
+                        }
+                    }
+            )
         }
-
-        func appendCard() {
-            let maxId = (service.taskData.map{ $0.id }.max() ?? 0) + 1
-            let task = TaskModel(id: maxId, name: "new task \(maxId)", date: Date().string())
-            service.taskData.append(task)
-            activeIndex = service.taskData.count - 1
-            service.selectedIndex = service.taskData.count - 1
-            selectedCard = true
-        }
+        .onAppear(perform: presenter?.fetchTask)
     }
-
-    struct TaskList_Previews: PreviewProvider {
-        static var previews: some View {
-            TaskList(presenter: nil, service: Service())
-        }
+    
+    func appendCard() {
+        let maxId = (service.taskData.map{ $0.id }.max() ?? 0) + 1
+        let task = TaskModel(id: maxId, name: "new task \(maxId)", date: Date().string())
+        service.taskData.append(task)
+        activeIndex = service.taskData.count - 1
+        selectedCard = true
     }
+}
