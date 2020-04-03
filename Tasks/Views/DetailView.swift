@@ -26,18 +26,26 @@ struct DetailView: View {
                             self.service.taskData[self.service.selectedIndex].color = color.rawValue
                         }) {
                             HStack {
-                                Text(color.rawValue == self.model.color ? "●" : "")
-                                    .font(.system(size: 16, weight: .medium))
-                                    .frame(width: 36, height: 36)
+                                Text(color.rawValue == self.model.color ? "◯" : "")
+                                    .font(.system(size: 45, weight: .bold))
+                                    .frame(width: 50, height: 50)
                                     .background(color.color)
+                                    .foregroundColor(.white)
                                     .clipShape(Circle())
                             }
+                            .padding(.top, 10)
                         }
                     }
                 }
 
-                TextField("name", text: $model.name).padding(.top, 10)
-                TextField("description", text: $model.description).padding(.top, 10)
+                TextField("description", text: $model.description)
+                    .padding(.top, 10)
+                    .font(.system(size: 30, weight: .heavy, design: .default))
+                    .font(.largeTitle)
+                    .multilineTextAlignment(.leading)
+                    .frame(width: UIScreen.main.bounds.width - 20, alignment: .leading)
+                    .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
+                    .lineLimit(10)
             }
             .padding(.horizontal, 10)
             Spacer()

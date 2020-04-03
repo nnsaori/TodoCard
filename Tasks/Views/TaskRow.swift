@@ -10,28 +10,40 @@ import SwiftUI
 
 struct TaskRow: View {
     @ObservedObject var service: Service
-    var model: TaskModel
+    @Binding var model: TaskModel
     var index: Int
-
+    var active: Bool
     var body: some View {
+
         HStack(alignment: .top) {
             VStack() {
-                Text(model.name)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.leading)
-                    .frame(width: 260, alignment: .leading)
-                    .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
+                if self.active {
+                    TextField("name", text: $model.name)
+                        .font(.system(size: 30, weight: .heavy, design: .default))
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.leading)
+                        .frame(width: 260, alignment: .leading)
+                        .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
+                } else {
+                    Text(model.name)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.leading)
+                        .frame(width: 260, alignment: .leading)
+                        .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
+
+                }
                 Spacer()
             }
 
-            Image(systemName: "xmark")
-                .frame(width: 36, height: 36)
-                .background(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
-                .cornerRadius(10)
-                .padding(.leading, 30)
-                .onTapGesture {
-                    self.doneCard()
+            if !self.active {
+                Image(systemName: "xmark")
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
+                    .padding(.leading, 30)
+                    .onTapGesture {
+                        self.doneCard()
+                    }
             }
         }
         .padding(.top, 10)
@@ -48,7 +60,6 @@ struct TaskRow: View {
     }
 
     func intToColor(raw: Int) -> Color {
-        #warning("TODO: force unwrapping")
         return TaskColor(rawValue: raw)?.color ?? .white
     }
 }
