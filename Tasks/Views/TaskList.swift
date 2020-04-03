@@ -27,15 +27,17 @@ struct TaskList: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    Button(action: appendCard, label: {Image(systemName: "xmark")})
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.trailing, 30)
-                        .padding(.top, 30)
+                    if !selectedCard {
+                        Button(action: appendCard, label: {Image(systemName: "xmark")})
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .padding(.trailing, 30)
+                            .padding(.top, 30)
+                    }
 
                     ForEach(service.taskData.indices, id: \.self) { index in
                         GeometryReader { geometry in
                             TaskRow(service: self.service, model: self.$service.taskData[index], index: index, active: (self.service.selectedIndex == index && self.selectedCard))
-                                .offset(y: self.service.selectedIndex == index && self.selectedCard ? -(geometry.frame(in: .global).minY - 250) : 0)
+                                .offset(y: self.service.selectedIndex == index && self.selectedCard ? -(geometry.frame(in: .global).minY - 150) : 0)
                                 .scaleEffect((self.service.selectedIndex == index && self.selectedCard) ? 1.1 : 1)
                                 .offset(x: self.activeIndex != index && self.selectedCard ? UIScreen.main.bounds.width : 0)
                                 .onTapGesture {
@@ -64,18 +66,18 @@ struct TaskList: View {
             }
 
                 DetailView(model: $service.taskData[activeIndex], service: service)
-                    .offset(x: 0, y: selectedCard ? 360 : 1000)
+                    .offset(x: 0, y: selectedCard ? 300 : 1000)
                     .offset(y: bottomState.height)
                     .blur(radius: selectedCard ? 0 : 0)
-                    .animation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.8))
+                    .animation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.5))
                     .gesture(
                         DragGesture().onChanged { value in
                             self.bottomState = value.translation
                             if self.showFull {
-                                self.bottomState.height += -300
+                                self.bottomState.height += -280
                             }
-                            if self.bottomState.height < -300 {
-                                self.bottomState.height = -300
+                            if self.bottomState.height < -280 {
+                                self.bottomState.height = -280
                             }
                         }
                         .onEnded { value in
@@ -83,7 +85,7 @@ struct TaskList: View {
                                 self.selectedCard = false
                             }
                             if (self.bottomState.height < -100 && !self.showFull) || (self.bottomState.height < -250 && self.showFull) {
-                                self.bottomState.height = -300
+                                self.bottomState.height = -280
                                 self.showFull = true
                             } else {
                                 self.bottomState = .zero
@@ -99,6 +101,9 @@ struct TaskList: View {
             let maxId = (service.taskData.map{ $0.id }.max() ?? 0) + 1
             let task = TaskModel(id: maxId, name: "new task \(maxId)", date: Date().string())
             service.taskData.append(task)
+            activeIndex = service.taskData.count - 1
+            service.selectedIndex = service.taskData.count - 1
+            selectedCard = true
         }
     }
 

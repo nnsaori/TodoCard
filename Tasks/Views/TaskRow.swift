@@ -16,25 +16,15 @@ struct TaskRow: View {
     var body: some View {
 
         HStack(alignment: .top) {
-            VStack() {
-                if self.active {
-                    TextField("name", text: $model.name)
-                        .font(.system(size: 30, weight: .heavy, design: .default))
-                        .font(.largeTitle)
-                        .multilineTextAlignment(.leading)
-                        .frame(width: 260, alignment: .leading)
-                        .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
-                } else {
-                    Text(model.name)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.leading)
-                        .frame(width: 260, alignment: .leading)
-                        .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
-
-                }
-                Spacer()
-            }
+            TextField("Title", text: $model.name)
+                .position(x: 100, y: 10)
+                .font(.system(size: 30, weight: .heavy, design: .default))
+                .font(.largeTitle)
+                .multilineTextAlignment(.leading)
+                .frame(width: 260, alignment: .leading)
+                .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
+                .disabled(!self.active)
+            .background(Color.pink)
 
             if !self.active {
                 Image(systemName: "xmark")
@@ -63,12 +53,3 @@ struct TaskRow: View {
         return TaskColor(rawValue: raw)?.color ?? .white
     }
 }
-
-//struct TaskRow_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Group {
-////            TaskRow(model: data[0])
-//        }
-//        .previewLayout(.fixed(width: 500, height: 300))
-//    }
-//}
