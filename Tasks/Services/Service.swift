@@ -14,11 +14,6 @@ func sortbyDate() -> [TaskModel] {
     return list
 }
 
-func selectedModel() -> [TaskModel] {
-    let list = data.sorted { $0.date < $1.date }
-    return list
-}
-
 class Service: ObservableObject {
     @Published var taskData: [TaskModel] = sortbyDate()
 

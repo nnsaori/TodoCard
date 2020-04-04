@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DetailView: View {
     @ObservedObject var service: Service
-    var index: Int
+    @State var model: TaskModel
 
     var body: some View {
         VStack(spacing: 20) {
@@ -18,17 +18,17 @@ struct DetailView: View {
                 .frame(width: 40, height: 5)
                 .cornerRadius(3)
                 .opacity(0.1)
+
             VStack {
                 HStack {
                     ForEach(TaskColor.allCases, id: \.self) { color in
                         Button(action: {
-                            if self.service.taskData.count - 1 >= self.index {
-                                self.service.taskData[self.index].color = color.rawValue
-                            }
+                            self.editColor(color: color)
                         }) {
                             HStack {
-                                if self.service.taskData.count - 1 >= self.index {
-                                    Text(color.rawValue == self.service.taskData[self.index].color ? "◯" : "")
+                                if self.getIndex() != nil {
+//                                if self.service.taskData.count - 1 >= self.index {
+                                    Text(color.rawValue == self.model.color ? "◯" : "")
                                         .font(.system(size: 45, weight: .bold))
                                         .frame(width: 50, height: 50)
                                         .background(color.color)
@@ -41,15 +41,13 @@ struct DetailView: View {
                     }
                 }
 
-                if service.taskData.count - 1 >= index {
-                    TextField("description", text: $service.taskData[index].description)
-                        .padding(.top, 10)
-                        .font(.system(size: 30, weight: .heavy, design: .default))
-                        .font(.largeTitle)
-                        .multilineTextAlignment(.leading)
-                        .frame(width: UIScreen.main.bounds.width - 20, alignment: .leading)
-                        .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
-                        .lineLimit(10)
+                if getIndex() != nil {
+//                if service.taskData.count - 1 >= index {
+                    TKTextView(text: $service.taskData[getIndex()!].description)
+//                            .frame(numLines: 5)
+                            .multilineTextAlignment(.leading)
+                            .padding(.leading, 20)
+                            .padding(.trailing, 20)
                 }
             }
             .padding(.horizontal, 10)
@@ -61,6 +59,18 @@ struct DetailView: View {
         .background(BlurView(style: .systemThinMaterial))
         .cornerRadius(30)
         .shadow(radius: 20)
+    }
+
+    func getIndex() -> Int? {
+        let index = self.service.taskData.firstIndex(where: { $0.id == model.id })
+        return index
+    }
+
+    func editColor(color: TaskColor) {
+        guard let index = self.service.taskData.firstIndex(where: { $0.id == model.id }) else  {
+            return
+        }
+        self.service.taskData[index].color = color.rawValue
     }
 }
 
