@@ -9,28 +9,41 @@
 import SwiftUI
 
 struct TKTextView: UIViewRepresentable {
+    typealias UIViewType = UITextView
+    var placeholderString: String
     @Binding var text: String
 
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    func makeUIView(context: Context) -> UITextView {
+    func makeUIView(context: UIViewRepresentableContext<TKTextView>) -> UITextView {
         let textView = UITextView()
-        textView.delegate = context.coordinator
-        textView.isScrollEnabled = true
-        textView.isEditable = true
-        textView.isUserInteractionEnabled = true
-        textView.backgroundColor = UIColor.clear
+        textView.textContainer.lineFragmentPadding = 0
+        textView.textContainerInset = .zero
+        textView.backgroundColor = .clear
         textView.alpha = 1
         textView.font = UIFont(name: "AvenirNext-Bold", size: 40)
-        textView.textColor = UIColor(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1))
-
+        textView.text = placeholderString
+        textView.textColor = .placeholderText
         return textView
     }
 
-    func updateUIView(_ textView: UITextView, context: Context) {
-        textView.text = text
+    func updateUIView(_ textView: UITextView, context: UIViewRepresentableContext<TKTextView>) {
+        if text != "" || textView.textColor != .placeholderText {
+            textView.text = text
+            textView.textColor = UIColor(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1))
+        } else {
+            textView.text = placeholderString
+            textView.textColor = .placeholderText
+        }
+        textView.delegate = context.coordinator
+
+    }
+
+    func frame(numLines: CGFloat) -> some View {
+        let height = UIFont(name: "AvenirNext-Bold", size: 40)!.lineHeight * numLines
+        return self.frame(height: height)
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
 }
 
@@ -42,15 +55,20 @@ extension TKTextView {
             self.textView = textView
         }
 
-        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-            let currentText = textView.text ?? ""
-            guard let stringRange = Range(range, in: currentText) else { return false }
-            let updatedText = currentText.replacingCharacters(in: stringRange, with: text)
-            return updatedText.count <= 15
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            if textView.textColor == .placeholderText {
+                textView.text = ""
+                textView.textColor = UIColor(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1))
+            }
         }
 
-        func textViewDidChange(_ textView: UITextView) {
-            self.textView.text = textView.text
+        func textViewDidEndEditing(_ textView: UITextView) {
+            if textView.textColor == .placeholderText {
+                textView.text = self.textView.placeholderString
+                textView.textColor = .placeholderText
+            } else {
+                self.textView.text = textView.text
+            }
         }
     }
 }

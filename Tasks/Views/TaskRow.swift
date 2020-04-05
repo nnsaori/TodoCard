@@ -16,8 +16,8 @@ struct TaskRow: View {
     var body: some View {
         HStack(alignment: .top) {
             if getIndex() != nil {
-                TKTextView(text: $service.taskData[self.service.taskData.firstIndex(where: {$0.id == model.id})!].name)
-//                    .frame(numLines: 3)
+                TKTextView(placeholderString: "TITLE", text: $service.taskData[self.service.taskData.firstIndex(where: {$0.id == model.id})!].name)
+                    .frame(numLines: 3)
                     .multilineTextAlignment(.leading)
                     .padding(.leading, 20)
                     .padding(.trailing, 20)
@@ -53,6 +53,6 @@ struct TaskRow: View {
     }
 
     func intToColor(raw: Int) -> Color {
-        return TaskColor(rawValue: raw)?.color ?? .white
+        return TaskColor(rawValue: raw)!.color
     }
 }

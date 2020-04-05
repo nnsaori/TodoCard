@@ -109,10 +109,8 @@ struct TaskList: View {
     }
     
     func addNewTask() {
-        let maxId = (service.taskData.map{ $0.id }.max() ?? 0) + 1
-        let task = TaskModel(id: maxId, name: "", description: "", date: Date().string())
-        self.service.taskData.insert(task, at: 0)
+        self.service.appendNewTask()
+        self.activeId = service.taskData.map{ $0.id }.max() ?? 0
         selectedCard = true
-        self.activeId = maxId
     }
 }

@@ -42,11 +42,10 @@ struct DetailView: View {
                 }
 
                 if getIndex() != nil {
-//                if service.taskData.count - 1 >= index {
-                    TKTextView(text: $service.taskData[getIndex()!].description)
-//                            .frame(numLines: 5)
+                    TKTextView(placeholderString: "DESCRIPTION..", text: $service.taskData[getIndex()!].description)
+                            .frame(numLines: 5)
                             .multilineTextAlignment(.leading)
-                            .padding(.leading, 20)
+                            .padding(.leading, 15)
                             .padding(.trailing, 20)
                 }
             }

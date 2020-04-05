@@ -17,6 +17,11 @@ func sortbyDate() -> [TaskModel] {
 class Service: ObservableObject {
     @Published var taskData: [TaskModel] = sortbyDate()
 
-    init() {
+    init() { }
+
+    func appendNewTask() {
+        let maxId = (self.taskData.map{ $0.id }.max() ?? 0) + 1
+        let task = TaskModel(id: maxId, name: "", description: "", date: Date().string(), color: 1)
+        self.taskData.insert(task, at: 0)
     }
 }
