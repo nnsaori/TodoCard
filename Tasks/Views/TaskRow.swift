@@ -9,14 +9,15 @@
 import SwiftUI
 
 struct TaskRow: View {
-    @ObservedObject var service: Service
+    @EnvironmentObject var store: ListStore
     @State var model: TaskModel
-    var active: Bool = false
+    var active: Bool
     
     var body: some View {
         HStack(alignment: .top) {
             if getIndex() != nil {
-                TKTextView(placeholderString: "TITLE", text: $service.taskData[self.service.taskData.firstIndex(where: {$0.id == model.id})!].name)
+                TKTextView(placeholderString: "TITLE",
+                           text: $store.state.cards[self.store.state.cards.firstIndex(where: {$0.id == model.id})!].name)
                     .frame(numLines: 3)
                     .multilineTextAlignment(.leading)
                     .padding(.leading, 20)
@@ -42,14 +43,11 @@ struct TaskRow: View {
     }
 
     func getIndex() -> Int? {
-        return self.service.taskData.firstIndex(where: {$0.id == model.id})
+        return self.store.state.cards.firstIndex(where: {$0.id == model.id})
     }
     
     func doneCard() {
-        guard let index = getIndex() else {
-            return
-        }
-        self.service.taskData.removeAll(where: { $0.id == self.service.taskData[index].id})
+        store.dispatch(action: ListAction.remove(id: model.id))
     }
 
     func intToColor(raw: Int) -> Color {

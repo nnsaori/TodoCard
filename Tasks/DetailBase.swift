@@ -9,15 +9,15 @@
 import SwiftUI
 
 struct DetailBase: View {
-    @ObservedObject var service = Service()
+//    @ObservedObject var service = Service()
     var taskModel: TaskModel
     var body: some View {
         Text(taskModel.name)
     }
 }
 
-struct DetailBase_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailBase(taskModel: data[0])
-    }
-}
+//struct DetailBase_Previews: PreviewProvider {
+//    static var previews: some View {
+////        DetailBase(taskModel: data[0])
+//    }
+//}

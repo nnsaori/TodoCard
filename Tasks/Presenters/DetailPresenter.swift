@@ -12,14 +12,14 @@ protocol DetailPresenterProtocol {
     func tappedColor(color: TaskColor?)
 }
 
-class DetailPresenter: DetailPresenterProtocol {
-    private var service: Service
-
-    init(service: Service) {
-        self.service = service
-    }
-
-    func tappedColor(color: TaskColor?) {
-//        service.lastSelectedTask.color = color?.rawValue
-    }
-}
+//class DetailPresenter: DetailPresenterProtocol {
+//    private var service: Service
+//
+//    init(service: Service) {
+//        self.service = service
+//    }
+//
+//    func tappedColor(color: TaskColor?) {
+////        service.lastSelectedTask.color = color?.rawValue
+//    }
+//}

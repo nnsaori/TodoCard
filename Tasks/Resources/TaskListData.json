@@ -1,26 +1,26 @@
 [
     {
-        "name": "2Meetint",
+        "name": "Meeting",
         "id": 1102,
         "date": "2018-08-14T04:04:30+09:00",
         "scheduled_date": "2018-09-14T04:04:30+09:00",
         "color": 1,
-        "description": "aaaaaaaaaaa",
+        "description": "TODO: XXX",
     },
     {
-        "name": "3Salon",
+        "name": "Salon",
         "id": 1001,
         "date": "2018-08-14T04:04:30+09:00",
         "scheduled_date": "2018-09-14T04:04:30+09:00",
         "color": 3,
-        "description": "",
+        "description": "Cut, Treatment",
     },
     {
-        "name": "1Silver Salmon Creek",
+        "name": "Shopping",
         "id": 1002,
         "date": "2018-08-14T04:04:30+09:00",
         "scheduled_date": "2018-09-14T04:04:30+09:00",
         "color": 2,
-        "description": "aaaaaaaaaaa",
+        "description": "Tofu, Leek, Sugar",
     }
 ]

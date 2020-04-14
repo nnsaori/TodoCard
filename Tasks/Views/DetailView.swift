@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct DetailView: View {
-    @ObservedObject var service: Service
+    @EnvironmentObject var store: ListStore
     @State var model: TaskModel
 
     var body: some View {
@@ -27,7 +27,6 @@ struct DetailView: View {
                         }) {
                             HStack {
                                 if self.getIndex() != nil {
-//                                if self.service.taskData.count - 1 >= self.index {
                                     Text(color.rawValue == self.model.color ? "◯" : "")
                                         .font(.system(size: 45, weight: .bold))
                                         .frame(width: 50, height: 50)
@@ -42,7 +41,8 @@ struct DetailView: View {
                 }
 
                 if getIndex() != nil {
-                    TKTextView(placeholderString: "DESCRIPTION..", text: $service.taskData[getIndex()!].description)
+                    TKTextView(placeholderString: "DESCRIPTION..",
+                               text: $store.state.cards[self.store.state.cards.firstIndex(where: {$0.id == model.id})!].description)
                             .frame(numLines: 5)
                             .multilineTextAlignment(.leading)
                             .padding(.leading, 15)
@@ -61,15 +61,11 @@ struct DetailView: View {
     }
 
     func getIndex() -> Int? {
-        let index = self.service.taskData.firstIndex(where: { $0.id == model.id })
-        return index
+        return self.store.state.cards.firstIndex(where: {$0.id == model.id})
     }
 
     func editColor(color: TaskColor) {
-        guard let index = self.service.taskData.firstIndex(where: { $0.id == model.id }) else  {
-            return
-        }
-        self.service.taskData[index].color = color.rawValue
+        self.store.dispatch(action: RowAction.editColor(value: color))
     }
 }
 

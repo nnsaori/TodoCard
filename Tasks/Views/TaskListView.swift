@@ -1,5 +1,5 @@
 //
-//  TaskList.swift
+//  TaskListView.swift
 //  Tasks
 //
 //  Created by saori on 2020/03/29.
@@ -8,21 +8,15 @@
 
 import SwiftUI
 
-struct TaskList: View {
+struct TaskListView: View {
+    @EnvironmentObject var store: ListStore
+
     @State private var selectedCard = false
     @State private var viewState = CGSize.zero
     @State private var bottomState = CGSize.zero
     @State private var showFull = false
     @State private var activeIndex = 0
-    @State private var activeId = 0
     @State var lastModel: TaskModel?
-    @ObservedObject private var service: Service
-
-    var presenter: TaskListPresenter?
-    init(presenter: TaskListPresenter?, service: Service) {
-        self.service = service
-        self.presenter = presenter
-    }
 
     var body: some View {
         ZStack {
@@ -35,16 +29,15 @@ struct TaskList: View {
                             .padding(.top, 30)
                     }
 
-                    ForEach(service.taskData, id: \.self) { model in
+                    ForEach(store.state.cards, id: \.self) { model in
                         GeometryReader { geometry in
-                            TaskRow(service: self.service, model: model,
-                                    active: (self.activeIndex == self.service.taskData.firstIndex(of: model)  && self.selectedCard))
-                                .offset(y: self.activeIndex == self.service.taskData.firstIndex(of: model) && self.selectedCard ? -(geometry.frame(in: .global).minY - 150) : 0)
-                                .scaleEffect((self.activeIndex == self.service.taskData.firstIndex(of: model) && self.selectedCard) ? 1.1 : 1)
-                                .offset(x: self.activeIndex != self.service.taskData.firstIndex(of: model) && self.selectedCard ? UIScreen.main.bounds.width : 0)
+                            TaskRow(model: model, active: self.selectedCard && self.activeIndex == self.store.state.cards.firstIndex(of: model)).environmentObject(self.store)
+                                .offset(y: self.activeIndex == self.store.state.cards.firstIndex(of: model) && self.selectedCard ? -(geometry.frame(in: .global).minY - 150) : 0)
+                                .scaleEffect((self.activeIndex == self.store.state.cards.firstIndex(of: model) && self.selectedCard) ? 1.1 : 1)
+                                .offset(x: self.activeIndex != self.store.state.cards.firstIndex(of: model) && self.selectedCard ? UIScreen.main.bounds.width : 0)
                                 .onTapGesture {
-                                    self.activeIndex = self.service.taskData.firstIndex(of: model)!
-                                    self.activeId = model.id
+                                    self.store.dispatch(action: ListAction.select(model: model))
+                                    self.activeIndex = self.store.state.cards.firstIndex(of: model)!
                                     self.lastModel = model
                                     self.selectedCard = true
                             }
@@ -67,9 +60,9 @@ struct TaskList: View {
                 .animation(.spring(response: 0.5, dampingFraction: 0.6, blendDuration: 0))
             }
 
-            ForEach(service.taskData, id: \.self) { model in
-                DetailView(service: self.service, model: model)
-                    .offset(x: 0, y: self.selectedCard && self.activeId == model.id ? 300 : 1000)
+            ForEach(store.state.cards, id: \.self) { model in
+                DetailView(model: model).environmentObject(self.store)
+                    .offset(x: 0, y: self.selectedCard && self.activeIndex == self.store.state.cards.firstIndex(of: model) ? 300 : 1000)
                     .offset(y: self.bottomState.height)
                     .animation(.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.5))
                     .gesture(
@@ -105,12 +98,14 @@ struct TaskList: View {
                 )
             }
         }
-        .onAppear(perform: presenter?.fetchTask)
+        .onAppear {
+            self.store.dispatch(action: ListAction.fetch)
+        }
     }
     
     func addNewTask() {
-        self.service.appendNewTask()
-        self.activeId = service.taskData.map{ $0.id }.max() ?? 0
+        self.store.dispatch(action: ListAction.add)
+        self.activeIndex = self.store.state.cards.count - 1
         selectedCard = true
     }
 }
