@@ -17,13 +17,13 @@ enum TaskColor: Int, CaseIterable {
     var color: Color {
         switch self {
         case .pink:
-            return Color(#colorLiteral(red: 0.9803921569, green: 0.7882352941, blue: 0.7215686275, alpha: 1))
+            return Color(#colorLiteral(red: 0.262745098, green: 0.2549019608, blue: 0.4588235294, alpha: 1))
 
         case .orange:
-            return Color(#colorLiteral(red: 0.8980392157, green: 0.831372549, blue: 0.7529411765, alpha: 1))
+            return Color(#colorLiteral(red: 0.8117647059, green: 0.4862745098, blue: 0.4941176471, alpha: 1))
 
         case .blue:
-            return Color(#colorLiteral(red: 0.7725490196, green: 0.8705882353, blue: 0.8039215686, alpha: 1))
+            return Color(#colorLiteral(red: 0.9058823529, green: 0.6470588235, blue: 0.4784313725, alpha: 1))
         }
     }
 }

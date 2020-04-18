@@ -28,7 +28,8 @@ struct TKTextView: UIViewRepresentable {
     func updateUIView(_ textView: UITextView, context: UIViewRepresentableContext<TKTextView>) {
         if text != "" || textView.textColor != .placeholderText {
             textView.text = text
-            textView.textColor = UIColor(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1))
+            textView.textColor = UIColor.white
+
         } else {
             textView.text = placeholderString
             textView.textColor = .placeholderText

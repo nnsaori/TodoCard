@@ -26,13 +26,28 @@ struct TaskRow: View {
             }
 
             if !self.active {
-                Image(systemName: "xmark")
-                    .frame(width: 40, height: 40)
-                    .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
-                    .padding(.leading, 30)
-                    .onTapGesture {
-                        self.doneCard()
-                    }
+                Button(action: { self.doneCard() }, label: {
+                    Image("done")
+                    .foregroundColor(Color.white)
+                })
+                .frame(width: 40, height: 40)
+                .background(BlurView(style: .systemThinMaterial))
+                .cornerRadius(20)
+                .padding(.trailing, 10)
+
+
+//                VStack {
+//                    Image(systemName: "xmark")
+//                        .frame(width: 40, height: 40)
+//                        .foregroundColor(Color(#colorLiteral(red: 0.2862745098, green: 0.3176470588, blue: 0.3490196078, alpha: 1)))
+//                        .onTapGesture {
+//                            self.doneCard()
+//                        }
+//                }
+//                .frame(width: 40, height: 40)
+//                .background(Color.white)
+//                .cornerRadius(20)
+//                .padding(.trailing, 10)
             }
         }
         .padding(.top, 20)

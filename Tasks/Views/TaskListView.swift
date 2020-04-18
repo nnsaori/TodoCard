@@ -23,7 +23,7 @@ struct TaskListView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     if !selectedCard {
-                        Button(action: addNewTask, label: {Image(systemName: "xmark")})
+                        Button(action: addNewTask, label: {Image("plus")})
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .padding(.trailing, 30)
                             .padding(.top, 30)
