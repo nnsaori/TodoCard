@@ -1,10 +1,13 @@
 # SwiftUI-TodoCard 📄
 タスクマネージャーアプリです。  
-独自のアニメーションの表現をSwiftUIで実装しました。
+独自のアニメーションをSwiftUIで実装しました。
 
-<img src="https://user-images.githubusercontent.com/5316319/79103563-ca951600-7da7-11ea-83a2-e447ac798fa5.gif" width="200" />
+<img src="https://user-images.githubusercontent.com/5316319/79960337-3ff79980-84c0-11ea-8567-0e9459189637.gif" width="200" />
 
 
 # Requirements
-Xcode Version 11.4+  
-Swift5+
+- Xcode Version 11.4+  
+- Swift5+
+
+# Dependency
+- ReSwift
