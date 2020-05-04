@@ -1,4 +1,0 @@
-framework module ReSwift {
-  header "ReSwift-Swift.h"
-  requires objc
-}
