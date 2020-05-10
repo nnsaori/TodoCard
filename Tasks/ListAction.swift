@@ -12,11 +12,10 @@ import ReSwift
 enum ListAction: Action {
     case fetch
     case add
+    case detailViewWillClose(model: TaskModel)
     case select(model: TaskModel)
     case remove(id: Int)
-}
-
-enum RowAction: Action {
     case editTitle(value: String)
     case editColor(value: TaskColor)
 }
+

@@ -23,7 +23,7 @@ struct TaskListView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     if !selectedCard {
-                        Button(action: addNewTask, label: {Image("plus")})
+                        Button(action: addNewCard, label: { Image("plus") })
                             .frame(maxWidth: .infinity, alignment: .trailing)
                             .padding(.trailing, 30)
                             .padding(.top, 30)
@@ -85,6 +85,8 @@ struct TaskListView: View {
                                     .compactMap({$0})
                                     .first?.windows
                                         .filter({$0.isKeyWindow}).first?.endEditing(true)
+
+                                    self.store.dispatch(action: ListAction.detailViewWillClose(model: self.store.state.cards[self.activeIndex]))
                                 }
                             }
                             if (self.bottomState.height < -100 && !self.showFull) || (self.bottomState.height < -250 && self.showFull) {
@@ -103,7 +105,7 @@ struct TaskListView: View {
         }
     }
     
-    func addNewTask() {
+    func addNewCard() {
         self.store.dispatch(action: ListAction.add)
         self.activeIndex = self.store.state.cards.count - 1
         selectedCard = true

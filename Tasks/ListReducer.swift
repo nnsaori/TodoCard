@@ -14,8 +14,6 @@ struct ListReducer {
     static func reduce(action: Action, state: ListState) -> ListState {
 
         switch action {
-        case let rowAction as RowAction:
-            return reduce(action: rowAction, state: state)
 
         case let listAction as ListAction:
             return reduce(action: listAction, state: state)
@@ -27,19 +25,6 @@ struct ListReducer {
         return state
     }
 
-    static func reduce(action: RowAction, state: ListState) -> ListState {
-        var state = state
-
-        switch action {
-        case .editTitle(let title):
-            state.cards[state.activeIndex].name = title
-            return state
-
-        case .editColor(let color):
-            state.cards[state.activeIndex].color = color.rawValue
-            return state
-        }
-    }
 
     static func reduce(action: ListAction, state: ListState) -> ListState {
         var state = state
@@ -54,6 +39,12 @@ struct ListReducer {
             let task = TaskModel(id: maxId, name: "", description: "", date: Date().string(), color: 1)
             state.cards.append(task)
             state.activeIndex = maxId
+
+            state.notification.setup()
+            return state
+
+        case .detailViewWillClose(let model):
+            state.notification.addScheduleNotification(model: model)
             return state
 
         case .select(let model):
@@ -61,6 +52,14 @@ struct ListReducer {
                 return state
             }
             state.activeIndex = index
+            return state
+
+        case .editTitle(let title):
+            state.cards[state.activeIndex].name = title
+            return state
+
+        case .editColor(let color):
+            state.cards[state.activeIndex].color = color.rawValue
             return state
 
         case .remove(id: let id):

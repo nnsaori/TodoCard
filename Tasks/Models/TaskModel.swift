@@ -36,8 +36,3 @@ struct TaskModel: Hashable, Codable, Identifiable {
     var scheduledDate: Date?
     var color: Int = 1
 }
-
-struct ListState {
-    var cards: [TaskModel]
-    var activeIndex: Int
-}

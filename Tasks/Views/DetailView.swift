@@ -65,7 +65,7 @@ struct DetailView: View {
     }
 
     func editColor(color: TaskColor) {
-        self.store.dispatch(action: RowAction.editColor(value: color))
+        self.store.dispatch(action: ListAction.editColor(value: color))
     }
 }
 

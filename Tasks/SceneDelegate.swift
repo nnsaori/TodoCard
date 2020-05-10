@@ -14,6 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        UNUserNotificationCenter.current().delegate = self
 
         let taskList = TaskListView().environmentObject(ListStore())
         if let windowScene = scene as? UIWindowScene {
@@ -55,3 +56,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+extension SceneDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("")
+    }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        let userInfo = response.notification.request.content.userInfo
+        print(userInfo)
+        guard let costomData = userInfo["data"] else {
+            completionHandler()
+            return
+        }
+
+        print("!!!!!! \(costomData)")
+
+        completionHandler()
+    }
+}

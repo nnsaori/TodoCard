@@ -14,7 +14,7 @@ final class ListStore: ObservableObject {
     @Published var state: ListState
     @Published private(set) var selectedId: Int
 
-    init(state: ListState = .init(cards: [], activeIndex: -1)) {
+    init(state: ListState = .init(cards: [], activeIndex: -1, notification: UserNotificationCenterManager())) {
         self.state = state
         selectedId = -1
     }

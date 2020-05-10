@@ -21,6 +21,9 @@
 		226686ED2433473C006A80F6 /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226686EC2433473C006A80F6 /* BlurView.swift */; };
 		226686F62434EC03006A80F6 /* Date+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226686F52434EC03006A80F6 /* Date+Extention.swift */; };
 		226D9187243889360005EE55 /* TKTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226D9186243889360005EE55 /* TKTextView.swift */; };
+		22C048D724602B6000546319 /* UserNotificationCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C048D624602B6000546319 /* UserNotificationCenterManager.swift */; };
+		22C048D824602B6000546319 /* UserNotificationCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C048D624602B6000546319 /* UserNotificationCenterManager.swift */; };
+		22C0491A2461A7B000546319 /* ListState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C049192461A7B000546319 /* ListState.swift */; };
 		22EE1D3A2430AAE300057620 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EE1D392430AAE300057620 /* AppDelegate.swift */; };
 		22EE1D3C2430AAE300057620 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EE1D3B2430AAE300057620 /* SceneDelegate.swift */; };
 		22EE1D402430AAE600057620 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22EE1D3F2430AAE600057620 /* Assets.xcassets */; };
@@ -89,6 +92,8 @@
 		226686EC2433473C006A80F6 /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		226686F52434EC03006A80F6 /* Date+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extention.swift"; sourceTree = "<group>"; };
 		226D9186243889360005EE55 /* TKTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TKTextView.swift; sourceTree = "<group>"; };
+		22C048D624602B6000546319 /* UserNotificationCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationCenterManager.swift; sourceTree = "<group>"; };
+		22C049192461A7B000546319 /* ListState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListState.swift; sourceTree = "<group>"; };
 		22EE1D362430AAE300057620 /* Tasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22EE1D392430AAE300057620 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22EE1D3B2430AAE300057620 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +182,7 @@
 				226686E22430D293006A80F6 /* TaskListView.swift */,
 				226686E924312164006A80F6 /* DetailView.swift */,
 				226686DE2430CF52006A80F6 /* TaskRow.swift */,
+				22EE1D392430AAE300057620 /* AppDelegate.swift */,
 				226686EB2433471D006A80F6 /* UtilViews */,
 			);
 			path = Views;
@@ -196,6 +202,14 @@
 				226D9186243889360005EE55 /* TKTextView.swift */,
 			);
 			path = UIKits;
+			sourceTree = "<group>";
+		};
+		22C049182461A79800546319 /* States */ = {
+			isa = PBXGroup;
+			children = (
+				22C049192461A7B000546319 /* ListState.swift */,
+			);
+			path = States;
 			sourceTree = "<group>";
 		};
 		22EE1D2D2430AAE300057620 = {
@@ -225,10 +239,11 @@
 				226D9185243889150005EE55 /* UIKits */,
 				226686F42434EBEA006A80F6 /* Extentions */,
 				226686D92430CE0C006A80F6 /* Resources */,
+				22C049182461A79800546319 /* States */,
 				226686E62430EF6D006A80F6 /* Stores */,
 				226686D62430CA5E006A80F6 /* Models */,
 				226686F124335CBD006A80F6 /* Views */,
-				22EE1D392430AAE300057620 /* AppDelegate.swift */,
+				22C048D624602B6000546319 /* UserNotificationCenterManager.swift */,
 				22EE1D3B2430AAE300057620 /* SceneDelegate.swift */,
 				22EE1D3F2430AAE600057620 /* Assets.xcassets */,
 				22EE1D442430AAE600057620 /* LaunchScreen.storyboard */,
@@ -424,12 +439,14 @@
 			files = (
 				226686E32430D293006A80F6 /* TaskListView.swift in Sources */,
 				226686E12430D148006A80F6 /* Data.swift in Sources */,
+				22C0491A2461A7B000546319 /* ListState.swift in Sources */,
 				2217D255244340C20086E8E8 /* ListReducer.swift in Sources */,
 				22EE1D3A2430AAE300057620 /* AppDelegate.swift in Sources */,
 				226686EA24312164006A80F6 /* DetailView.swift in Sources */,
 				226686ED2433473C006A80F6 /* BlurView.swift in Sources */,
 				226D9187243889360005EE55 /* TKTextView.swift in Sources */,
 				22EE1D3C2430AAE300057620 /* SceneDelegate.swift in Sources */,
+				22C048D724602B6000546319 /* UserNotificationCenterManager.swift in Sources */,
 				226686DF2430CF52006A80F6 /* TaskRow.swift in Sources */,
 				226686F62434EC03006A80F6 /* Date+Extention.swift in Sources */,
 				226686D82430CA77006A80F6 /* TaskModel.swift in Sources */,
@@ -442,6 +459,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22C048D824602B6000546319 /* UserNotificationCenterManager.swift in Sources */,
 				22EE1D512430AAE700057620 /* TasksTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
