@@ -12,14 +12,15 @@ import SwiftUI
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var store = ListStore()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         UNUserNotificationCenter.current().delegate = self
 
-        let taskList = TaskListView().environmentObject(ListStore())
+        let view = TaskListView().environmentObject(store)
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: taskList)
+            window.rootViewController = UIHostingController(rootView: view)
             self.window = window
             window.makeKeyAndVisible()
         }
@@ -52,25 +53,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 
 extension SceneDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("")
     }
+
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
 
         let userInfo = response.notification.request.content.userInfo
-        print(userInfo)
-        guard let costomData = userInfo["data"] else {
+        guard let costomData = userInfo["data"] as? Dictionary<String, Any>, let id = costomData["id"] as? Int else {
             completionHandler()
             return
         }
 
-        print("!!!!!! \(costomData)")
-
+        store.selectedId = id
         completionHandler()
     }
 }

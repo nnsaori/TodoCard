@@ -11,14 +11,13 @@ import UserNotifications
 
 class UserNotificationCenterManager: NSObject {
 
-    func setup() {
-        UNUserNotificationCenter.current().delegate = self
+    func setup(model: TaskModel) {
         let center = UNUserNotificationCenter.current()
-
         center.requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] (granted, error) in
             guard let strongSelf = self else { return }
             if !granted { return }
 
+            strongSelf.addScheduleNotification(model: model)
         }
     }
 
@@ -31,7 +30,7 @@ print("addScheduleNotification \(model.description)")
         content.userInfo = ["data": ["id" : model.id]]
 
         var dateComponents = DateComponents()
-        dateComponents.second = 10
+        dateComponents.second =  5
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) { error in
@@ -39,24 +38,5 @@ print("addScheduleNotification \(model.description)")
                 print("Error! UNUserNotificationCenter.add :\(String(describing: error.localizedDescription))")
             }
         }
-    }
-}
-
-extension UserNotificationCenterManager: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("")
-    }
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-
-        let userInfo = response.notification.request.content.userInfo
-        print(userInfo)
-        guard let costomData = userInfo["data"] else {
-            completionHandler()
-            return
-        }
-
-        print("!!!!!! \(costomData)")
-
-        completionHandler()
     }
 }

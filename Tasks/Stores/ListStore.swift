@@ -12,7 +12,7 @@ import ReSwift
 
 final class ListStore: ObservableObject {
     @Published var state: ListState
-    @Published private(set) var selectedId: Int
+    @Published var selectedId: Int
 
     init(state: ListState = .init(cards: [], activeIndex: -1, notification: UserNotificationCenterManager())) {
         self.state = state

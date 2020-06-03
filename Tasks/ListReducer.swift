@@ -40,7 +40,7 @@ struct ListReducer {
             state.cards.append(task)
             state.activeIndex = maxId
 
-            state.notification.setup()
+            state.notification.setup(model: task)
             return state
 
         case .detailViewWillClose(let model):
@@ -62,7 +62,7 @@ struct ListReducer {
             state.cards[state.activeIndex].color = color.rawValue
             return state
 
-        case .remove(id: let id):
+        case .remove(let id):
             state.cards.removeAll(where: { $0.id == id })
             return state
         }
